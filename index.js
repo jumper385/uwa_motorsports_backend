@@ -14,7 +14,7 @@ const Schemas = require('./schemas/Schemas')
 const User = mongoose.model('User', Schemas.User)
 
 // @desc express middleware
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 
 // @desc http request handlers
 app.get('/', (req,res) => {
