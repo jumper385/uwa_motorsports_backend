@@ -9,12 +9,16 @@ mongoose.connect(
     {useNewUrlParser:true, useUnifiedTopology:true}
 )
 
+// @desc mongoose schemas
+const UserSchema = require('./schemas/User')
+const User = mongoose.model('User', UserSchema)
+
 // @desc express middleware
 app.use(morgan('tiny'))
 
 // @desc http request handlers
 app.get('/', (req,res) => {
-    res.json({message:'hello world'})
+    res.json(newUser)
 })
 
 // @desc app listeners
