@@ -18,7 +18,7 @@ app.use(morgan('tiny'))
 
 // @desc http request handlers
 app.get('/', (req,res) => {
-    res.json(newUser)
+    res.json('hello world')
 })
 
 // @desc app listeners
