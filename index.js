@@ -10,8 +10,8 @@ mongoose.connect(
 )
 
 // @desc mongoose schemas
-const UserSchema = require('./schemas/User')
-const User = mongoose.model('User', UserSchema)
+const Schemas = require('./schemas/Schemas')
+const User = mongoose.model('User', Schemas.User)
 
 // @desc express middleware
 app.use(morgan('tiny'))
