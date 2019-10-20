@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 
 // @desc express middleware
-app.use(morgan('combined'))
+app.use(morgan('tiny'))
+
 
 // @desc http request handlers
 app.get('/', (req,res) => {
