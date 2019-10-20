@@ -3,9 +3,14 @@ const app = require('express')()
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 
+// @desc mongoose setup
+mongoose.connect(
+    'mongodb://localhost/uwa_motorsports', 
+    {useNewUrlParser:true, useUnifiedTopology:true}
+)
+
 // @desc express middleware
 app.use(morgan('tiny'))
-
 
 // @desc http request handlers
 app.get('/', (req,res) => {
