@@ -2,6 +2,9 @@
 const app = require('express')()
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const multer = require('multer')
+const bodyParser = require('body-parser')
+const GridFsStorage = require('multer-gridfs-storage')
 
 // @desc mongoose setup
 mongoose.connect(
@@ -14,11 +17,13 @@ const Schemas = require('./schemas/Schemas')
 const User = mongoose.model('User', Schemas.User)
 
 // @desc express middleware
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}));
 
 // @desc http request handlers
 app.get('/', (req,res) => {
-    res.json('hello world')
+    res.json({message:'hello world'})
 })
 
 // @desc app listeners
