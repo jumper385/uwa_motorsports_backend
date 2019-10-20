@@ -2,7 +2,9 @@
 const app = require('express')()
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
+
+// @desc express middleware
+app.use(morgan('tiny'))
 
 // @desc http request handlers
 app.get('/', (req,res) => {
