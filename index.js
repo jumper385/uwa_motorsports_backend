@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const multer = require('multer')
 const bodyParser = require('body-parser')
 const GridFsStorage = require('multer-gridfs-storage')
+const shortid = require('shortid')
 
 // @desc mongoose setup
 mongoose.connect(
@@ -12,10 +13,17 @@ mongoose.connect(
     {useNewUrlParser:true, useUnifiedTopology:true}
 )
 
+// @desc multer setup + upload location
 const storage = GridFsStorage({
     url:'mongodb://localhost/uwa_motorsports',
+    file: (req,file) => {
+        const type = file.mimetype
+        return {
+            bucketName: type === 'image/jpeg' ? 'photos' : null,
+            filename: shortid.generate()
+        }
+    }
 })
-
 const upload = multer({ storage:storage, useUnifiedTopology:true })
 
 // @desc mongoose schemas
@@ -32,7 +40,8 @@ app.get('/', (req,res) => {
     res.json({message:'hello world'})
 })
 
-app.post('/', upload.single('photos'), (req,res,next) => {
+// @desc multer img upload test
+app.post('/', upload.single('payload'), (req,res,next) => {
     
     const mongoPayload = {
         file:req.file,
