@@ -40,5 +40,9 @@ app.get('/', (req,res) => {
     res.json({message:'hello world'})
 })
 
+app.post('/upload', upload.single('payload'), (req,res) => {
+    res.json(req.file)
+})
+
 // @desc app listeners
 app.listen(3000, () => console.log('listening on port:3000'))
