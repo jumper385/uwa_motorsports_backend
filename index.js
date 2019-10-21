@@ -45,6 +45,8 @@ app.post('/', upload.single('payload'), (req,res,next) => {
         file:req.file,
         body:req.body
     }
+
+    console.log(req.file.filename)
     
     res.json(mongoPayload)
 })
