@@ -7,7 +7,13 @@ const UserSchema = new mongoose.Schema({
     email:String,
 })
 
+// @desc img schema
+const ImageSchema = new mongoose.Schema({
+    data:Buffer
+})
+
 // @desc schema output
 module.exports = {
-    User:UserSchema
+    User:UserSchema,
+    Image:ImageSchema
 }

@@ -6,6 +6,7 @@ const multer = require('multer')
 const bodyParser = require('body-parser')
 const GridFsStorage = require('multer-gridfs-storage')
 const shortid = require('shortid')
+const Grid = require('gridfs-stream')
 
 // @desc mongoose setup
 mongoose.connect(
@@ -29,6 +30,7 @@ const upload = multer({ storage:storage, useUnifiedTopology:true })
 // @desc mongoose schemas
 const Schemas = require('./schemas/Schemas')
 const User = mongoose.model('User', Schemas.User)
+const Image = mongoose.model('Image', Schemas.Image)
 
 // @desc express middleware
 app.use(morgan('dev'))
@@ -36,14 +38,6 @@ app.use(morgan('dev'))
 // @desc http request handlers
 app.get('/', (req,res) => {
     res.json({message:'hello world'})
-})
-
-// @desc multer img upload test
-app.post('/', upload.single('payload'), (req,res,next) => {
-    console.log('hello world')
-    const filename = req.file.filename
-    const readstream = upload.createReadStream(filename)
-    readstream.pipe(res)
 })
 
 // @desc app listeners
