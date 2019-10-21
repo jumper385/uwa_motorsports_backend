@@ -9,10 +9,15 @@ const shortid = require('shortid')
 const Grid = require('gridfs-stream')
 
 // @desc mongoose setup
-mongoose.connect(
+const conn = mongoose.createConnection(
     'mongodb://localhost/uwa_motorsports', 
     {useNewUrlParser:true, useUnifiedTopology:true}
 )
+let gfs = null
+conn.once('open', () => {
+    gfs = Grid(conn.db, mongoose.mongo)
+    gfs.collection('photos')
+})
 
 // @desc multer setup + upload location
 const storage = GridFsStorage({
@@ -20,7 +25,6 @@ const storage = GridFsStorage({
     file: (req,file) => {
         const type = file.mimetype
         return {
-            bucketName: type === 'image/jpeg' ? 'photos' : null,
             filename: shortid.generate()
         }
     }
@@ -34,14 +38,34 @@ const Image = mongoose.model('Image', Schemas.Image)
 
 // @desc express middleware
 app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // @desc http request handlers
 app.get('/', (req,res) => {
     res.json({message:'hello world'})
 })
 
+// @desc add photos here
 app.post('/upload', upload.single('payload'), (req,res) => {
     res.json(req.file)
+})
+
+// @desc get file list
+app.get('/files', (req,res) => {
+    gfs.files.find().toArray((err,files) => {
+        res.json(files)
+    })
+})
+
+// @desc get images here
+app.get('/files/:id', (req,res) => {
+    console.log(req.params.id)
+    gfs.files.findOne({filename:req.params.id}, (err,file) => {
+        file.length ? 1 : res.json('no img found')
+        const readstream = gfs.createReadStream(file.filename)
+        readstream.pipe(res)
+    })
+    // res.json('hello world')
 })
 
 // @desc app listeners
