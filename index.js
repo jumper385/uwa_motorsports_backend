@@ -40,15 +40,10 @@ app.get('/', (req,res) => {
 
 // @desc multer img upload test
 app.post('/', upload.single('payload'), (req,res,next) => {
-    
-    const mongoPayload = {
-        file:req.file,
-        body:req.body
-    }
-
-    console.log(req.file.filename)
-    
-    res.json(mongoPayload)
+    console.log('hello world')
+    const filename = req.file.filename
+    const readstream = storage.createReadStream(filename)
+    readstream.pipe(res)
 })
 
 // @desc app listeners
