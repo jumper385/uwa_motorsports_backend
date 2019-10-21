@@ -42,7 +42,7 @@ app.get('/', (req,res) => {
 app.post('/', upload.single('payload'), (req,res,next) => {
     console.log('hello world')
     const filename = req.file.filename
-    const readstream = storage.createReadStream(filename)
+    const readstream = upload.createReadStream(filename)
     readstream.pipe(res)
 })
 
