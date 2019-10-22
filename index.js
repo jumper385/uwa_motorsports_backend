@@ -16,7 +16,7 @@ const conn = mongoose.createConnection(
 let gfs = null
 conn.once('open', () => {
     gfs = Grid(conn.db, mongoose.mongo)
-    gfs.collection('photos')
+    gfs.collection('fs')
 })
 
 // @desc multer setup + upload location
@@ -50,7 +50,7 @@ app.post('/upload', upload.single('payload'), (req,res) => {
     res.json(req.file)
 })
 
-// @desc get file list
+// @desc get images list
 app.get('/files', (req,res) => {
     gfs.files.find().toArray((err,files) => {
         res.json(files)
@@ -59,13 +59,11 @@ app.get('/files', (req,res) => {
 
 // @desc get images here
 app.get('/files/:id', (req,res) => {
-    console.log(req.params.id)
     gfs.files.findOne({filename:req.params.id}, (err,file) => {
-        file.length ? 1 : res.json('no img found')
+        if (err) {throw err}
         const readstream = gfs.createReadStream(file.filename)
         readstream.pipe(res)
     })
-    // res.json('hello world')
 })
 
 // @desc app listeners
