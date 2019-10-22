@@ -34,7 +34,6 @@ const upload = multer({ storage:storage, useUnifiedTopology:true })
 // @desc mongoose schemas
 const Schemas = require('./schemas/Schemas')
 const User = mongoose.model('User', Schemas.User)
-const Image = mongoose.model('Image', Schemas.Image)
 
 // @desc express middleware
 app.use(morgan('dev'))
